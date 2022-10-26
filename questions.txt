@@ -1,3 +1,1 @@
 Questions:
-
-1. How do we center the graph in poincare disk?
