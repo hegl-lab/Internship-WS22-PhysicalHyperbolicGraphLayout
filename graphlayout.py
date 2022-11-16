@@ -29,7 +29,6 @@ def layout(filenameoutput, graph):
 
 gr = el.edglist('testgraph')
 layout('testlayout', gr)
-graph_draw(gr, vertex_text=gr.vertex_index, output="testgraph2.pdf")
-
+graph_draw(gr, vertex_text=gr.vp.name, output="testgraph2.pdf")
 # Graphlayout concides with the graph drawn, not with the graph specified in testgraph however
 	

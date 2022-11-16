@@ -20,7 +20,9 @@ def each_chunk(stream, separator):
 
 
 def edglist(filename):
+    '''Takes a .txt file and returns a edgelist out of the textfile, where the graph g has the property g.vp.name'''
     listOfEdges = np.empty(shape=(1, 2))
+    print(listOfEdges)
     with open('testgraph') as myFile:
         for chunk in each_chunk(myFile, separator='\n'):
             edge = chunk.split(",")
@@ -31,21 +33,28 @@ def edglist(filename):
             else:
                 edge = np.array([np.asarray(arr)])
             listOfEdges = np.append(listOfEdges, edge, axis=0)
+    listOfEdges = np.delete(listOfEdges, 0,0)
     listOfEdges = np.unique(listOfEdges, axis=0)
+    print(listOfEdges)
 
     g = Graph(directed=False)
-
+    vertexName = g.new_vertex_property("string")
     # Creating a list of all vertices
     uniqueList = np.unique(listOfEdges)
-
+    dictVertexName = dict()
     # Adding the vertices to the graph
     for x in uniqueList:
-        globals()[f"v{int(x)}"] = g.add_vertex()
+        print(x)
+        i = g.add_vertex()
+        vertexName[i] = str(x)
+        dictVertexName[x] = g.vertex_index[i]
 
     for x in listOfEdges:
-        e = g.add_edge(globals()[f"v{int(x[0])}"], globals()[f"v{int(x[1])}"])
+        e = g.add_edge(g.vertex(dictVertexName[x[0]]), g.vertex(dictVertexName[x[1]]))
+    print(dictVertexName)
+    g.vertex_properties["name"] = vertexName
     return g
 
 
 a = edglist("testgraph")
-graph_draw(a, vertex_text=a.vertex_index, output="testgraph.pdf")
+graph_draw(a, vertex_text=a.vp.name, output="testgraph.pdf")
