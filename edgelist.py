@@ -33,7 +33,7 @@ def edglist(filename):
             else:
                 edge = np.array([np.asarray(arr)])
             listOfEdges = np.append(listOfEdges, edge, axis=0)
-    listOfEdges = np.delete(listOfEdges, 0,0)
+    listOfEdges = np.delete(listOfEdges, 0, 0)
     listOfEdges = np.unique(listOfEdges, axis=0)
     print(listOfEdges)
 
@@ -46,7 +46,7 @@ def edglist(filename):
     for x in uniqueList:
         print(x)
         i = g.add_vertex()
-        vertexName[i] = str(x)
+        vertexName[i] = str(int(x))
         dictVertexName[x] = g.vertex_index[i]
 
     for x in listOfEdges:
