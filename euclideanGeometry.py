@@ -37,5 +37,5 @@ c = EuclideanGeometry(0)
 
 p1 = [1, 6]
 p2 = [3,4]
-print(c.translate( p1, p2))
+print(c.translate(p1, p2))
 print(c.direction(p1, p2))

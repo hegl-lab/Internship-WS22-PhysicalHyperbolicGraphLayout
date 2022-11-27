@@ -8,7 +8,7 @@ class Point(ABC):
     def __init__(self, dist, direct):
         self.dist
         self.direct
-
+    # Do we need to initiate a storage for already happend translations and a hidden euclidean point?
     def getDist(self):
         return self.dist
 
