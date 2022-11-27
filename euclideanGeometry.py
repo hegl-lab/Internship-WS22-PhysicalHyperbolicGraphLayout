@@ -2,9 +2,7 @@ import Geometry
 import numpy as np
 
 class EuclideanGeometry(Geometry.Geometry):
-    def translate(self, pa, pb):
-        print("I can walk and run")
-    
+
     def translate(self, pa, pb):
         for index, x in enumerate(pa):
             pa[index] = pa[index] + pb[index] 
@@ -17,7 +15,7 @@ class EuclideanGeometry(Geometry.Geometry):
             dist = dist + (pa[index] - pb[index])**2
         dist = np.sqrt(dist)
         return dist
-        pass
+
 
     
     def direction(self, pa, pb):
@@ -31,7 +29,7 @@ class EuclideanGeometry(Geometry.Geometry):
         pass
 
     def getOrigin(self):
-        return origin
+        return self.origin
 
 c = EuclideanGeometry(0)
 

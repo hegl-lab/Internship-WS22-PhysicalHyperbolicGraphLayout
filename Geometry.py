@@ -45,4 +45,4 @@ class Geometry(ABC):
         pass
 
     def getOrigin(self):
-        return origin
+        return self.origin
