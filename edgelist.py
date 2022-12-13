@@ -22,8 +22,8 @@ def each_chunk(stream, separator):
 def edglist(filename):
     '''Takes a .txt file and returns a edgelist out of the textfile, where the graph g has the property g.vp.name'''
     listOfEdges = np.empty(shape=(1, 2))
-    print(listOfEdges)
-    with open('testgraph') as myFile:
+    # print(listOfEdges)
+    with open(filename, 'r') as myFile:
         for chunk in each_chunk(myFile, separator='\n'):
             edge = chunk.split(",")
             try:
@@ -35,7 +35,7 @@ def edglist(filename):
             listOfEdges = np.append(listOfEdges, edge, axis=0)
     listOfEdges = np.delete(listOfEdges, 0, 0)
     listOfEdges = np.unique(listOfEdges, axis=0)
-    print(listOfEdges)
+    # print(listOfEdges)
 
     g = Graph(directed=False)
     vertexName = g.new_vertex_property("string")
@@ -51,10 +51,6 @@ def edglist(filename):
 
     for x in listOfEdges:
         e = g.add_edge(g.vertex(dictVertexName[x[0]]), g.vertex(dictVertexName[x[1]]))
-    print(dictVertexName)
+    #print(dictVertexName)
     g.vertex_properties["name"] = vertexName
     return g
-
-
-a = edglist("testgraph")
-graph_draw(a, vertex_text=a.vp.name, output="testgraph.pdf")
