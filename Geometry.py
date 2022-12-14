@@ -4,32 +4,30 @@ from abc import ABC, abstractmethod
 
 
 class Point(ABC):
+    def __init__(self, euclPoint):
+        self.euclPoint = euclPoint
 
-    def __init__(self, dist, direct):
-        self.dist
-        self.direct
-    # Do we need to initiate a storage for already happend translations and a hidden euclidean point?
-    def getDist(self):
-        return self.dist
+    def __add__(self, pb):
+        return Point([self.euclPoint[0]+pb.euclPoint[0], self.euclPoint[1]+pb.euclPoint[1]])
 
-    def getDirect(self):
-        return self.direct
+    def __sub__(self, pb):
+        return Point([self.euclPoint[0]-pb.euclPoint[0], self.euclPoint[1]-pb.euclPoint[1]])
 
-    def setDist(self, dist):
-        self.dist = dist
+    def __mul__(self, scalar):
+        return Point([self.euclPoint[0]*scalar, self.euclPoint[1]*scalar])
 
-    def setDirect(self, direct):
-        self.direct = direct
-
+    def midpoint(self, pb):
+        return (self+pb)*(1/2)
 # still needs to inherit Point class?
+
+
 class Geometry(ABC):
 
     def __init__(self, origin):
-        self.origin = origin
-
+        self.origin = Point(origin)
 
     @abstractmethod
-    def translate(self, pa, pb):
+    def translate(self, pa, direct):
         pass
 
     @abstractmethod
@@ -41,7 +39,7 @@ class Geometry(ABC):
         pass
 
     @abstractmethod
-    def paralleltransport(direct, pa):
+    def paralleltransport(direct, pa, pb):
         pass
 
     def getOrigin(self):

@@ -1,39 +1,35 @@
 import Geometry
 import numpy as np
 
+
 class EuclideanGeometry(Geometry.Geometry):
 
-    def translate(self, pa, pb):
-        for index, x in enumerate(pa):
-            pa[index] = pa[index] + pb[index] 
-        return pa
+    def translate(self, pa, direct):
+        return pa + direct
 
-    
     def getDistance(self, pa, pb):
         dist = 0
-        for index, x in enumerate(pa):
-            dist = dist + (pa[index] - pb[index])**2
+        for index, x in enumerate(pa.euclPoint):
+            dist = dist + (pa.euclPoint[index] - pb.euclPoint[index])**2
         dist = np.sqrt(dist)
         return dist
 
-
-    
     def direction(self, pa, pb):
         direct = []
-        for index, x in enumerate(pa):
-            direct.append(pb[index] - pa[index])
-        return direct
+        for index, x in enumerate(pa.euclPoint):
+            direct.append(pb.euclPoint[index] - pa.euclPoint[index])
+        return Geometry.Point(direct)
 
-    
-    def paralleltransport(direct, pa):
+    def paralleltransport(direct, pa, pb):
         pass
 
     def getOrigin(self):
         return self.origin
 
+
 c = EuclideanGeometry(0)
 
-p1 = [1, 6]
-p2 = [3,4]
-print(c.translate(p1, p2))
-print(c.direction(p1, p2))
+p1 = Geometry.Point([1, 1])
+p2 = Geometry.Point([3, 4])
+#print(c.translate(p1, p2).euclPoint)
+#print(c.direction(p1, p2))
