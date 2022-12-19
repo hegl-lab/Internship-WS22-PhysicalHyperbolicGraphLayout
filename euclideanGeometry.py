@@ -25,7 +25,7 @@ class EuclideanGeometry(Geometry.Geometry):
 
     def getOrigin(self):
         return self.origin
-
+    #def randomPoint maybe 1000*1000 square
 
 c = EuclideanGeometry(0)
 

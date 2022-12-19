@@ -7,13 +7,13 @@ eG = euclideanGeometry.EuclideanGeometry([0, 0])
 
 class PoincareDiskModel(Geometry.Geometry):
     def checkOnOriginLine(self, pa, pb, epsilon):
-        if (-pa.euclPoint[1] * (pb.euclPoint[0] - pa.euclPoint[0]) - pa.euclPoint[0] * (pb.euclPoint[1] - pa.euclPoint[1]))>epsilon:
-            return False
-        return True
+        return (-pa.euclPoint[1] * (pb.euclPoint[0] - pa.euclPoint[0]) - pa.euclPoint[0] * (pb.euclPoint[1] - pa.euclPoint[1]))<epsilon 
+
     #returns Center and radius of the circle or in case the geodesic is a line the direction of the line and 0
     def getGeodesic(self, pa, pb):
         if self.checkOnOriginLine(pa, pb, 0.01) == True:
             return eG.direction(pa, pb), 0
+        # Returning what in case of straight line?
         # Naming of the variables following Wikipedia second way https://en.wikipedia.org/wiki/Poincar%C3%A9_disk_model#Compass_and_straightedge_construction
         midpointPaPb = pa.midpoint(pb)
         pPrime = pa * (1/(eG.getDistance(Geometry.Point([0, 0]), pa)**2))
@@ -55,7 +55,7 @@ class PoincareDiskModel(Geometry.Geometry):
 
     def getOrigin(self):
         return self.origin
-
+    
 
 c = PoincareDiskModel([0, 0])
 

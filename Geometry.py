@@ -44,3 +44,5 @@ class Geometry(ABC):
 
     def getOrigin(self):
         return self.origin
+
+    #def randomPoint
