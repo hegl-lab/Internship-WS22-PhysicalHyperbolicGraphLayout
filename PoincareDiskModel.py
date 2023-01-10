@@ -1,6 +1,8 @@
 import Geometry
 import euclideanGeometry
 import numpy as np
+from math import cos, sin
+
 
 eG = euclideanGeometry.EuclideanGeometry([0, 0])
 
@@ -44,17 +46,17 @@ class PoincareDiskModel(Geometry.Geometry):
         return x
 
     def direction(self, pa, pb):
-        Center, r = c.getGeodesic(pb, pa)
+        Center, r = self.getGeodesic(pb, pa)
         direct = eG.direction(Center, pa)
         direct.euclPoint[0], direct.euclPoint[1] = -direct.euclPoint[1], direct.euclPoint[0]
         return direct
 
-    def paralleltransport(direct, pa, pb):
-        center, r = c.getGeodesic(pb, pa)
-        tangent = eG.direction(center, pa)
-        tangent.euclPoint[0], tangent.euclPoint[1] = tangent.euclPoint[1], -tangent.euclPoint[0] 
-        
-        pass
+    def paralleltransport(self, direct, pa, pb):
+        center, r = self.getGeodesic(pb, pa)
+        theta = eG.angle_between(eG.getTangent(center, pa), direct)
+        rot = np.array([[cos(theta), -sin(theta)], [sin(theta), cos(theta)]])
+        return Geometry.Point(np.dot(rot, eG.getTangent(center, pb).euclPoint))
+
 
     def getOrigin(self):
         return self.origin
@@ -65,5 +67,3 @@ c = PoincareDiskModel([0, 0])
 direct = Geometry.Point([0,1])
 p1 = Geometry.Point([0.1, 0.5])
 p2 = Geometry.Point([0.2, 0.2])
-C, r = c.getGeodesic(p1, p2)
-print(c.paralleltransport(direct, p1, p2).euclPoint)

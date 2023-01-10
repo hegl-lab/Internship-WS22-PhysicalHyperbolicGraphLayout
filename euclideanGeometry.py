@@ -28,7 +28,7 @@ class EuclideanGeometry(Geometry.Geometry):
 
     def unit_vector(self, direct):
         """ Returns the unit vector of the vector.  """
-        return direct / np.linalg.norm(direct)
+        return direct /np.linalg.norm(direct.euclPoint)
 
     def angle_between(self, v1, v2):
         """ Returns the angle in radians between vectors 'v1' and 'v2'"""
@@ -38,8 +38,12 @@ class EuclideanGeometry(Geometry.Geometry):
 
     #def randomPoint maybe 1000*1000 square
 
-c = EuclideanGeometry(0)
+    def getTangent(self, center, pa):
+        tangent = self.direction(center, pa)
+        tangent.euclPoint[0], tangent.euclPoint[1] = tangent.euclPoint[1], -tangent.euclPoint[0] 
+        return tangent
+#c = EuclideanGeometry(Geometry.Point([0,0]))
 
-p1 = Geometry.Point([1, 1])
-p2 = Geometry.Point([3, 4])
-print(c.angle_between(p1, p2))
+#p1 = Geometry.Point([1, 0])
+#p2 = Geometry.Point([3, 4])
+
