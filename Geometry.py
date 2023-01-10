@@ -16,6 +16,9 @@ class Point(ABC):
     def __mul__(self, scalar):
         return Point([self.euclPoint[0]*scalar, self.euclPoint[1]*scalar])
 
+    def __div__(self, scalar):
+        return Point([self.euclPoint[0]/scalar, self.euclPoint[1]/scalar])
+
     def midpoint(self, pb):
         return (self+pb)*(1/2)
 # still needs to inherit Point class?

@@ -50,7 +50,10 @@ class PoincareDiskModel(Geometry.Geometry):
         return direct
 
     def paralleltransport(direct, pa, pb):
-        Center, r = c.getGeodesic(pb, pa)
+        center, r = c.getGeodesic(pb, pa)
+        tangent = eG.direction(center, pa)
+        tangent.euclPoint[0], tangent.euclPoint[1] = tangent.euclPoint[1], -tangent.euclPoint[0] 
+        
         pass
 
     def getOrigin(self):

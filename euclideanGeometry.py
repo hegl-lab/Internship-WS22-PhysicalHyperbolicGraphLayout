@@ -25,6 +25,17 @@ class EuclideanGeometry(Geometry.Geometry):
 
     def getOrigin(self):
         return self.origin
+
+    def unit_vector(direct):
+        """ Returns the unit vector of the vector.  """
+        return direct / np.linalg.norm(vector)
+
+    def angle_between(v1, v2):
+        """ Returns the angle in radians between vectors 'v1' and 'v2'"""
+        v1_u = unit_vector(v1)
+        v2_u = unit_vector(v2)
+        return np.arccos(np.clip(np.dot(v1_u.euclPoint, v2_u.euclPoint), -1.0, 1.0))
+
     #def randomPoint maybe 1000*1000 square
 
 c = EuclideanGeometry(0)
