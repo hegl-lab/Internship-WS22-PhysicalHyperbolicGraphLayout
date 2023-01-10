@@ -62,7 +62,8 @@ class PoincareDiskModel(Geometry.Geometry):
 
 c = PoincareDiskModel([0, 0])
 
+direct = Geometry.Point([0,1])
 p1 = Geometry.Point([0.1, 0.5])
 p2 = Geometry.Point([0.2, 0.2])
 C, r = c.getGeodesic(p1, p2)
-print(r)
+print(c.paralleltransport(direct, p1, p2).euclPoint)
