@@ -1,5 +1,6 @@
 import Geometry
 import numpy as np
+import random
 
 
 class EuclideanGeometry(Geometry.Geometry):
@@ -28,7 +29,7 @@ class EuclideanGeometry(Geometry.Geometry):
 
     def unit_vector(self, direct):
         """ Returns the unit vector of the vector.  """
-        return direct /np.linalg.norm(direct.euclPoint)
+        return direct / np.linalg.norm(direct.euclPoint)
 
     def angle_between(self, v1, v2):
         """ Returns the angle in radians between vectors 'v1' and 'v2'"""
@@ -36,14 +37,17 @@ class EuclideanGeometry(Geometry.Geometry):
         v2_u = self.unit_vector(v2)
         return np.arccos(np.clip(np.dot(v1_u.euclPoint, v2_u.euclPoint), -1.0, 1.0))
 
-    #def randomPoint maybe 1000*1000 square
+    def randomPoint(self, range):
+        return Geometry.Point([random.randint(-range, range), random.randint(-range, range)])
 
     def getTangent(self, center, pa):
         tangent = self.direction(center, pa)
-        tangent.euclPoint[0], tangent.euclPoint[1] = tangent.euclPoint[1], -tangent.euclPoint[0] 
+        tangent.euclPoint[0], tangent.euclPoint[1] = tangent.euclPoint[1], - \
+            tangent.euclPoint[0]
         return tangent
-#c = EuclideanGeometry(Geometry.Point([0,0]))
+
+
+c = EuclideanGeometry(Geometry.Point([0, 0]))
 
 #p1 = Geometry.Point([1, 0])
 #p2 = Geometry.Point([3, 4])
-
