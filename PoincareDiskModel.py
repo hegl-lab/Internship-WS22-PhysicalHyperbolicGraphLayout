@@ -9,11 +9,11 @@ eG = euclideanGeometry.EuclideanGeometry([0, 0])
 
 class PoincareDiskModel(Geometry.Geometry):
     def checkOnOriginLine(self, pa, pb, epsilon):
-        return (-pa.euclPoint[1] * (pb.euclPoint[0] - pa.euclPoint[0]) - pa.euclPoint[0] * (pb.euclPoint[1] - pa.euclPoint[1])) < epsilon
+        return abs((-pa.euclPoint[1] * (pb.euclPoint[0] - pa.euclPoint[0]) - pa.euclPoint[0] * (pb.euclPoint[1] - pa.euclPoint[1]))) < epsilon
 
     # returns Center and radius of the circle or in case the geodesic is a line the direction of the line and 0
     def getGeodesic(self, pa, pb):
-        if self.checkOnOriginLine(pa, pb, 0.01) == True:
+        if self.checkOnOriginLine(pa, pb, 0.0000001) == True:
             return eG.direction(pa, pb), 0
         # Returning what in case of straight line?
         # Naming of the variables following Wikipedia second way https://en.wikipedia.org/wiki/Poincar%C3%A9_disk_model#Compass_and_straightedge_construction
@@ -53,7 +53,7 @@ class PoincareDiskModel(Geometry.Geometry):
         return direct
 
     def paralleltransport(self, direct, pa, pb):
-        center, r = self.getGeodesic(pb, pa)
+        center, r = self.getGeodesic(pa, pb)
         theta = eG.angle_between(eG.getTangent(center, pa), direct)
         rot = np.array([[cos(theta), -sin(theta)], [sin(theta), cos(theta)]])
         return Geometry.Point(np.dot(rot, eG.getTangent(center, pb).euclPoint))
@@ -73,4 +73,4 @@ c = PoincareDiskModel([0, 0])
 direct = Geometry.Point([0, 1])
 p1 = Geometry.Point([0.1, 0.5])
 p2 = Geometry.Point([0.2, 0.2])
-print(random.random())
+#print(random.random())
