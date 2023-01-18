@@ -68,8 +68,8 @@ class DrawPoincareDisk():
 
 # example
         p1 = Geometry.Point([0.1, 0.1])
-        p2 = Geometry.Point([0.2, 0.5])
-        #self.drawGeodesic(p1, p2)
+        p2 = Geometry.Point([0.3, 0.5])
+        self.drawGeodesic(p1, p2)
         self.drawPoint(p1, 255)
         self.drawPoint(p2, 255)
         C, r = pdm.getGeodesic(p1, p2)
