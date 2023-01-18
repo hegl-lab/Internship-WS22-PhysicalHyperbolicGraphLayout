@@ -36,11 +36,9 @@ class PoincareDiskModel(Geometry.Geometry):
 
     def translate(self, pa, direct, dist):
         z_0 = complex(pa.euclPoint[0], pa.euclPoint[1])
-        direct = complex(eG.unit_vector(direct).euclPoint[0], eG.unit_vector(direct).euclPoint[1])
-        direct = (direct - z_0)/(direct*z_0 + 1) 
-        pa = (cmath.exp(dist) - 1)/(cmath.exp(dist) + 1)*direct
-        print(pa)
-        return Geometry.Point([((pa + z_0)/(pa*z_0 + 1)).real, ((pa + z_0)/(pa*z_0 + 1)).imag]) 
+        direct = complex(eG.unit_vector(direct).euclPoint[0], eG.unit_vector(direct).euclPoint[1]) 
+        pa =  (cmath.exp(dist) - 1)/(cmath.exp(dist) + 1)*direct
+        return Geometry.Point([((pa + z_0)/(pa*z_0.conjugate() + 1)).real, ((pa + z_0)/(pa*z_0.conjugate() + 1)).imag]) 
 
     def getDistance(self, pa, pb):
         r = 1
@@ -50,6 +48,8 @@ class PoincareDiskModel(Geometry.Geometry):
         return np.arccosh(1+(2 * euclDistPaPb**2 * r**2) /
                        ((r**2 - euclDistPaO**2)*(r**2 - euclDistPbO**2)))
 
+# TODO Check orientation
+# Taking Determinant of p1, p2 -> check sign
     def direction(self, pa, pb):
         Center, r = self.getGeodesic(pb, pa)
         direct = eG.direction(Center, pa)

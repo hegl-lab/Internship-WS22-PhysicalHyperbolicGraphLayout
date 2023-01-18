@@ -68,8 +68,8 @@ class DrawPoincareDisk():
 
 # example
         p1 = Geometry.Point([0.1, 0.1])
-        p2 = Geometry.Point([0.3, 0.5])
-        self.drawGeodesic(p1, p2)
+        p2 = Geometry.Point([0.2, 0.3])
+        #self.drawGeodesic(p1, p2)
         self.drawPoint(p1, 255)
         self.drawPoint(p2, 255)
         C, r = pdm.getGeodesic(p1, p2)
@@ -80,11 +80,16 @@ class DrawPoincareDisk():
         #self.drawDirection(p1, eG.getTangent(p1, C))
         #self.drawDirection(p2, eG.getTangent(p2, C))
         #self.cr.show_page()
-        self.drawPoint(pdm.translate(p1, pdm.direction(p1, p2), pdm.getDistance(p1, p2)), 0, 255)
-        self.drawPoint(pdm.translate(p1, Geometry.Point([1,-1]), pdm.getDistance(p1, p2)))
-
+        self.drawPoint(pdm.translate(p1, pdm.direction(p1, p2), -pdm.getDistance(p1, p2)), 0, 255)
+        #p3 = pdm.translate(p1, Geometry.Point([1,1]), 0.5)
+        #self.drawPoint(p3)
+        #print(pdm.getDistance(p1, p3))
         #print(pdm.translate(p1, Geometry.Point([1, 1]), 0.4).euclPoint)
-        self.drawDirection(p1, eG.unit_vector(pdm.direction(p1, p2))*pdm.getDistance(p1, p2))
+        #self.drawDirection(p1, eG.unit_vector(pdm.direction(p1, p2))*pdm.getDistance(p1, p2))
+        #self.drawDirection(p1, eG.unit_vector(pdm.direction(p1, p2))*pdm.getDistance(p1, p2))
+        #print(pdm.getDistance(p1, p2))
+        self.drawDirection(p1, pdm.direction(p1, p2))
+        self.drawPoint(Geometry.Point([0.1, -0.5]))
         return
 
 
