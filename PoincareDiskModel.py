@@ -48,13 +48,14 @@ class PoincareDiskModel(Geometry.Geometry):
         return np.arccosh(1+(2 * euclDistPaPb**2 * r**2) /
                        ((r**2 - euclDistPaO**2)*(r**2 - euclDistPbO**2)))
 
-# TODO Check orientation
-# Taking Determinant of p1, p2 -> check sign
     def direction(self, pa, pb):
         Center, r = self.getGeodesic(pb, pa)
         direct = eG.direction(Center, pa)
         direct.euclPoint[0], direct.euclPoint[1] = -direct.euclPoint[1], direct.euclPoint[0]
-        return direct
+        if np.linalg.det([pa.euclPoint, pb.euclPoint])<0:
+            return direct
+        else:
+            return self.origin-direct
 
     def paralleltransport(self, direct, pa, pb):
         center, r = self.getGeodesic(pa, pb)
@@ -71,10 +72,3 @@ class PoincareDiskModel(Geometry.Geometry):
     def getOrigin(self):
         return self.origin
 
-
-c = PoincareDiskModel([0, 0])
-
-direct = Geometry.Point([0, 1])
-p1 = Geometry.Point([0.1, 0.5])
-p2 = Geometry.Point([0.2, 0.2])
-#print(c.translate(p1, direct, 0.3))

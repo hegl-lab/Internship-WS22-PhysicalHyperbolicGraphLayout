@@ -57,7 +57,7 @@ class DrawPoincareDisk():
         self.cr.set_source_rgb(255, 255, 255)
         self.cr.rectangle(0, 0, self.n, self.n)
         self.cr.fill()
-        self.cr.set_line_width(0.2)
+        self.cr.set_line_width(0.05)
 # creating disk
         self.cr.set_source_rgb(0, 0, 0)
         self.cr.arc(self.n/2, self.n/2, self.radius, 0, 2*math.pi)
@@ -67,31 +67,20 @@ class DrawPoincareDisk():
         self.drawPoint(Geometry.Point([0, 0]))
 
 # example
-        p1 = Geometry.Point([0.1, 0.1])
-        p2 = Geometry.Point([0.2, 0.3])
+        p1 = Geometry.Point([0.9, 0.1])
+        p2 = Geometry.Point([0.7, 0.5])
         #self.drawGeodesic(p1, p2)
         self.drawPoint(p1, 255)
-        self.drawPoint(p2, 255)
-        C, r = pdm.getGeodesic(p1, p2)
-        #self.drawDirection(p1, direct)
-        #self.drawDirection(p2, pdm.paralleltransport(direct, p2, p1))
-        #self.drawDirection(p1, eG.getTangent(C, p1))
-        #self.drawDirection(p2, eG.getTangent(C, p2))
-        #self.drawDirection(p1, eG.getTangent(p1, C))
-        #self.drawDirection(p2, eG.getTangent(p2, C))
-        #self.cr.show_page()
-        self.drawPoint(pdm.translate(p1, pdm.direction(p1, p2), -pdm.getDistance(p1, p2)), 0, 255)
-        #p3 = pdm.translate(p1, Geometry.Point([1,1]), 0.5)
-        #self.drawPoint(p3)
-        #print(pdm.getDistance(p1, p3))
-        #print(pdm.translate(p1, Geometry.Point([1, 1]), 0.4).euclPoint)
-        #self.drawDirection(p1, eG.unit_vector(pdm.direction(p1, p2))*pdm.getDistance(p1, p2))
-        #self.drawDirection(p1, eG.unit_vector(pdm.direction(p1, p2))*pdm.getDistance(p1, p2))
-        #print(pdm.getDistance(p1, p2))
-        self.drawDirection(p1, pdm.direction(p1, p2))
-        self.drawPoint(Geometry.Point([0.1, -0.5]))
+        for i in range(0, 15):
+            self.drawPoint(pdm.translate(p1, Geometry.Point([math.cos((2*math.pi/15)*i), math.sin((2*math.pi/15)*i)]), 0.5))
+        v = Geometry.Point([5,1])
+        p2i = p2
+        self.drawGeodesic(p2, pdm.translate(p2, v, 0.1))
+        for i in range(1, 15):
+            p2 = pdm.translate(p2i, v, 0.1)
+            v = pdm.paralleltransport(v, p2i, p2)
+            self.drawPoint(p2)
+            p2i=p2
         return
-
-
 c = DrawPoincareDisk(100)
 c.main()
