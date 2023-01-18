@@ -19,14 +19,17 @@ class DrawPoincareDisk():
         xy = Point.euclPoint
         return [(xy[0]+1)*self.radius + self.n/2 - self.radius, self.n - (xy[1]+1)*self.radius - (self.n/2 - self.radius)]
 
-    def drawPoint(self, Point):
+    def drawPoint(self, Point, colour1=0, colour2=0, colour3=0):
+        self.cr.set_source_rgb(colour1, colour2, colour3)
         self.cr.arc(self.transform(Point)[0], self.transform(
             Point)[1], self.radius*0.005, 0, 2*math.pi)
         self.cr.fill()
         return
 
-    def drawGeodesic(self, Point1, Point2):
+    def drawGeodesic(self, Point1, Point2, colour1=0, colour2=0, colour3=0):
         C, r = pdm.getGeodesic(Point1, Point2)
+        self.cr.set_source_rgb(colour1, colour2, colour3)
+
         if r == 0:
             self.cr.move_to(self.transform(Point1)[
                             0], self.transform(Point1)[1])
@@ -41,7 +44,8 @@ class DrawPoincareDisk():
             self.cr.stroke()
         return
 
-    def drawDirection(self, Point, Direction):
+    def drawDirection(self, Point, Direction, colour1=0, colour2=0, colour3=0):
+        self.cr.set_source_rgb(colour1, colour2, colour3)
         self.cr.move_to(self.transform(Point)[
                             0], self.transform(Point)[1])
         self.cr.line_to(self.transform(Point+Direction)[
