@@ -3,6 +3,7 @@ import euclideanGeometry
 import numpy as np
 from math import cos, sin
 import random
+import cmath
 
 eG = euclideanGeometry.EuclideanGeometry([0, 0])
 
@@ -33,23 +34,26 @@ class PoincareDiskModel(Geometry.Geometry):
                            * t, midpointPaPb.euclPoint[1] + slopeLineM.euclPoint[1] * t])
         return C, eG.getDistance(C, pa)
 
-    def translate(self, pa, pb):
-        pass
+    def translate(self, pa, direct, dist):
+        z_0 = complex(pa.euclPoint[0], pa.euclPoint[1])
+        direct = complex(eG.unit_vector(direct).euclPoint[0], eG.unit_vector(direct).euclPoint[1])
+        direct = (direct - z_0)/(direct*z_0 + 1) 
+        pa = (cmath.exp(dist) - 1)/(cmath.exp(dist) + 1)*direct
+        print(pa)
+        return Geometry.Point([((pa + z_0)/(pa*z_0 + 1)).real, ((pa + z_0)/(pa*z_0 + 1)).imag]) 
 
     def getDistance(self, pa, pb):
-        r = 2 * np.pi
+        r = 1
         euclDistPaPb = eG.getDistance(pa, pb)
         euclDistPaO = eG.getDistance(pa, self.getOrigin())
         euclDistPbO = eG.getDistance(pb, self.getOrigin())
-        x = np.arccosh(1+(2 * euclDistPaPb**2 * r**2) /
+        return np.arccosh(1+(2 * euclDistPaPb**2 * r**2) /
                        ((r**2 - euclDistPaO**2)*(r**2 - euclDistPbO**2)))
-        return x
 
     def direction(self, pa, pb):
         Center, r = self.getGeodesic(pb, pa)
         direct = eG.direction(Center, pa)
-        direct.euclPoint[0], direct.euclPoint[1] = - \
-            direct.euclPoint[1], direct.euclPoint[0]
+        direct.euclPoint[0], direct.euclPoint[1] = -direct.euclPoint[1], direct.euclPoint[0]
         return direct
 
     def paralleltransport(self, direct, pa, pb):
@@ -73,4 +77,4 @@ c = PoincareDiskModel([0, 0])
 direct = Geometry.Point([0, 1])
 p1 = Geometry.Point([0.1, 0.5])
 p2 = Geometry.Point([0.2, 0.2])
-#print(random.random())
+#print(c.translate(p1, direct, 0.3))
