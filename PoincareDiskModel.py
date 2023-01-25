@@ -14,7 +14,7 @@ class PoincareDiskModel(Geometry.Geometry):
 
     # returns Center and radius of the circle or in case the geodesic is a line the direction of the line and 0
     def getGeodesic(self, pa, pb):
-        if self.checkOnOriginLine(pa, pb, 0.00001) == True:
+        if self.checkOnOriginLine(pa, pb, 100) == True:
             return eG.direction(pa, pb), 0
         # Returning what in case of straight line?
         # Naming of the variables following Wikipedia second way https://en.wikipedia.org/wiki/Poincar%C3%A9_disk_model#Compass_and_straightedge_construction
