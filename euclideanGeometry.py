@@ -1,6 +1,8 @@
 import Geometry
 import numpy as np
 import random
+import cairo
+import math
 
 
 class EuclideanGeometry(Geometry.Geometry):
@@ -45,3 +47,90 @@ class EuclideanGeometry(Geometry.Geometry):
         tangent.euclPoint[0], tangent.euclPoint[1] = tangent.euclPoint[1], - \
             tangent.euclPoint[0]
         return tangent
+
+
+    def initiateImage(self, inputRadius, imageSize, name, defaultRGBColour, defaultLineWidth, defaultPointSize):
+        '''Draws the coordinate system including background'''
+        #Initiate size of the image, the radius of the PDM and the framework for the image
+        self.n = imageSize
+        self.radius = self.n/2*0.9
+        self.ps = cairo.SVGSurface(name, self.n, self.n)
+        self.cr = cairo.Context(self.ps)
+        self.inputRadius = inputRadius
+
+        #initiate default values
+        self.defaultLineWidth = defaultLineWidth*self.radius
+        self.defaultPointSize = defaultPointSize*self.radius
+        self.defaultRGBColour = defaultRGBColour
+        
+        # creating background
+        self.cr.set_source_rgb(255, 255, 255)
+        self.cr.rectangle(0, 0, self.n, self.n)
+        self.cr.fill()
+        self.cr.set_line_width(self.defaultLineWidth)
+
+        # creating origin
+        self.drawPoint(self.origin)
+        return
+
+    def transform(self, Point):
+        '''Takes a point from the coordinate system and returns transformed image coordinates as an array'''
+        xy = Point.euclPoint
+        return [((xy[0]+self.inputRadius)*self.radius)/self.inputRadius + self.n/2 - self.radius, self.n/2 - ((xy[1]+self.inputRadius)*self.radius)/self.inputRadius + self.radius]
+
+    def drawPoint(self, Point, RGBcolour=None, pointSize=None):
+        # Setting up colour and pointsize
+        if pointSize is None:
+            pointSize = self.defaultPointSize
+        if RGBcolour is None:
+            self.cr.set_source_rgb(*self.defaultRGBColour)
+        else:
+            self.cr.set_source_rgb(*RGBcolour)
+
+        #Drawing the Point
+        self.cr.arc(self.transform(Point)[0], self.transform(
+            Point)[1], pointSize, 0, 2*math.pi)
+        self.cr.fill()
+        return
+
+
+    def drawGeodesic(self, Point1, Point2, RGBcolour=None, lineWidth=None):
+        if lineWidth is None:
+            self.cr.set_line_width(self.defaultLineWidth)
+        else:
+            self.cr.set_line_width(lineWidth)
+        if RGBcolour is None:
+            self.cr.set_source_rgb(*self.defaultRGBColour)
+        else:
+            self.cr.set_source_rgb(*RGBcolour)
+
+        self.cr.move_to(self.transform(Point1)[0], self.transform(Point1)[1])
+        self.cr.line_to(self.transform(Point2)[0], self.transform(Point2)[1])
+        self.cr.stroke()
+        return
+
+    def drawDirection(self, Point, Direction, RGBcolour=None, lineWidth=None):
+        if lineWidth is None:
+            self.cr.set_line_width(self.defaultLineWidth)
+        else:
+            self.cr.set_line_width(lineWidth)
+        if RGBcolour is None:
+            self.cr.set_source_rgb(*self.defaultRGBColour)
+        else:
+            self.cr.set_source_rgb(*RGBcolour)
+
+        self.cr.move_to(self.transform(Point)[0], self.transform(Point)[1])
+        self.cr.line_to(self.transform(Point+Direction)[0], self.transform(Point+Direction)[1])
+        self.cr.stroke()
+        return
+
+
+    def drawGraph(self, inputRadius, name="PoincareDiskModel.svg", imageSize=100,  defaultRGBColour=[0,0,0], defaultLineWidth=0.005, defaultPointSize=0.0075):
+        '''Takes a List of Points and edges and returns an image'''
+        self.initiateImage(**dict(list(locals().items())[1:]))
+        for v in graph.iter_vertices():
+            self.drawPoint(points[v])
+
+        for s, t in graph.iter_edges():
+            self.drawGeodesic(points[s], points[t])
+        return

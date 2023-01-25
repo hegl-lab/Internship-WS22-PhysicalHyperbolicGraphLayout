@@ -38,14 +38,41 @@ class Geometry(ABC):
         pass
 
     @abstractmethod
-    def direction(pa, pb):
+    def direction(self, pa, pb):
         pass
 
     @abstractmethod
-    def paralleltransport(direct, pa, pb):
+    def paralleltransport(self, direct, pa, pb):
         pass
-
+    
+    @abstractmethod
     def getOrigin(self):
         return self.origin
 
-    #def randomPoint
+    @abstractmethod
+    def randomPoint(self, range):
+        pass
+
+    @abstractmethod
+    def initiateImage(self, inputRadius, imageSize, name, defaultRGBColour, defaultLineWidth, defaultPointSize):
+        pass
+
+    @abstractmethod
+    def transform(self, Point):
+        pass
+
+    @abstractmethod
+    def drawPoint(self, Point, RGBcolour, pointSize):
+        pass
+
+    @abstractmethod
+    def drawGeodesic(self, pa, pb, RGBcolour, lineWidth):
+        pass
+
+    @abstractmethod
+    def drawDirection(self, Point, Direction,  RGBcolour, lineWidth):
+        pass
+
+    @abstractmethod
+    def drawGraph(self, inputRadius, name, imageSize,  defaultRGBColour, defaultLineWidth, defaultPointSize):
+        pass
