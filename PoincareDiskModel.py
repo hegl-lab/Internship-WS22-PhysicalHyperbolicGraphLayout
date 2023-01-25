@@ -16,7 +16,6 @@ class PoincareDiskModel(Geometry.Geometry):
     def getGeodesic(self, pa, pb):
         if self.checkOnOriginLine(pa, pb, 100) == True:
             return eG.direction(pa, pb), 0
-        # Returning what in case of straight line?
         # Naming of the variables following Wikipedia second way https://en.wikipedia.org/wiki/Poincar%C3%A9_disk_model#Compass_and_straightedge_construction
         midpointPaPb = pa.midpoint(pb)
         pPrime = pa * (1/(eG.getDistance(Geometry.Point([0, 0]), pa)**2))
@@ -71,4 +70,3 @@ class PoincareDiskModel(Geometry.Geometry):
 
     def getOrigin(self):
         return self.origin
-

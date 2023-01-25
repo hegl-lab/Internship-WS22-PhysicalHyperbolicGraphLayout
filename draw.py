@@ -63,8 +63,6 @@ class DrawPoincareDisk():
         
         #Case, where the geodesic is a straight line through the origin
         if r == 0:
-            self.cr.set_source_rgb(
-                255, 0, 0)
             self.cr.move_to(self.transform(Point1)[
                             0], self.transform(Point1)[1])
             self.cr.line_to(self.transform(Point2)[
@@ -154,7 +152,6 @@ class DrawPoincareDisk():
         for s, t in graph.iter_edges():
             self.drawGeodesic(points[s], points[t])
         return
-
 
 
 c = DrawPoincareDisk(100,)
