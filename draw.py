@@ -146,9 +146,10 @@ class DrawPoincareDisk():
         self.drawGeodesic(p1, p2)
         return
 
-    def plotGraph(self, graph):
-        '''Takes a List of '''
-
+    def plotGraph(self, PointList, EdgeList):
+        '''Takes a List of Points and edges'''
+        for v in PointList:
+            a
 
 
 c = DrawPoincareDisk(50)
