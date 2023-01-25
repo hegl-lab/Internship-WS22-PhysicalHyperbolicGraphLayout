@@ -9,13 +9,13 @@ import numpy as np
 pdm = PoincareDiskModel.PoincareDiskModel([0, 0])
 eG = euclideanGeometry.EuclideanGeometry([0, 0])
 
-
+#TODO implement draw in geometry
 class DrawPoincareDisk():
-    def __init__(self, size):
+    def __init__(self, size, name="PoincareDiskModel.svg"):
         '''Initiate size of the image, the radius of the PDM and the framework for the image'''
         self.n = size
         self.radius = self.n/2*0.9
-        self.ps = cairo.SVGSurface("PoincareDiskModel.svg", self.n, self.n)
+        self.ps = cairo.SVGSurface(name, self.n, self.n)
         self.cr = cairo.Context(self.ps)
         self.defaultLineWidth = 0.005*self.radius
         self.defaultPointSize = 0.0075*self.radius
@@ -23,7 +23,7 @@ class DrawPoincareDisk():
         self.drawPDM()
 
     def transform(self, Point):
-        '''Takes a point from the unitcircle and retunrns transformed  image coordinates as an array'''
+        '''Takes a point from the unitcircle and returns transformed image coordinates as an array'''
         xy = Point.euclPoint
         return [(xy[0]+1)*self.radius + self.n/2 - self.radius, self.n - (xy[1]+1)*self.radius - (self.n/2 - self.radius)]
 
@@ -155,5 +155,7 @@ class DrawPoincareDisk():
             self.drawGeodesic(points[s], points[t])
         return
 
-c = DrawPoincareDisk(50)
-for i in range(60): c.main()
+
+
+c = DrawPoincareDisk(100,)
+for i in range(10): c.main()

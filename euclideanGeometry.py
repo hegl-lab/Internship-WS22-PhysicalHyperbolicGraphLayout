@@ -15,7 +15,7 @@ class EuclideanGeometry(Geometry.Geometry):
         dist = np.sqrt(dist)
         return dist
 
-    def direction(self, pa, pb):
+    def direction(self, pa, pb, dummy=None):
         direct = []
         for index, x in enumerate(pa.euclPoint):
             direct.append(pb.euclPoint[index] - pa.euclPoint[index])
