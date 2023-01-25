@@ -125,9 +125,9 @@ class EuclideanGeometry(Geometry.Geometry):
         return
 
 
-    def drawGraph(self, inputRadius, name="euclideanGeometry.svg", imageSize=100,  defaultRGBColour=[0,0,0], defaultLineWidth=0.005, defaultPointSize=0.0075):
+    def drawGraph(self, graph, points,  inputRadius=None, name="euclideanGeometry.svg", imageSize=100,  defaultRGBColour=[0,0,0], defaultLineWidth=0.005, defaultPointSize=0.0075):
         '''Takes a List of Points and edges and returns an image'''
-        self.initiateImage(**dict(list(locals().items())[1:]))
+        self.initiateImage(**dict(list(locals().items())[3:]))
         for v in graph.iter_vertices():
             self.drawPoint(points[v])
 

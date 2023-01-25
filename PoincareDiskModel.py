@@ -200,9 +200,9 @@ class PoincareDiskModel(Geometry.Geometry):
         return
 
 
-    def drawGraph(self, inputRadius=1, name="PoincareDiskModel.svg", imageSize=100,  defaultRGBColour=[0,0,0], defaultLineWidth=0.005, defaultPointSize=0.0075):
+    def drawGraph(self, graph, points, inputRadius=1, name="PoincareDiskModel.svg", imageSize=100,  defaultRGBColour=[0,0,0], defaultLineWidth=0.005, defaultPointSize=0.0075):
         '''Takes a List of Points and edges'''
-        self.initiateImage(**dict(list(locals().items())[1:]))
+        self.initiateImage(**dict(list(locals().items())[3:]))
         for v in graph.iter_vertices():
             self.drawPoint(points[v])
 
