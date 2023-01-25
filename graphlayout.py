@@ -13,22 +13,21 @@ import edgelist as el
 
 
 # Randomly assings coordinates to vertices and outputs to a text file 
-def layout(filenameoutput, graph):
+def layout(filenameoutput, graph, points):
     f = open(filenameoutput, 'w')
-    f.write('Vertices:\n')
 
     # Iterate over Vertices
-    for v in graph.vertices():
-        f.write(str(v) + ' ' + str(rd.randint(0,100)) + ' ' + str(rd.randint(0,100)) + '\n')
+    for v in graph.iter_vertices():
+        f.write(str(v) + ' ' + str(points[v].euclPoint) + '\n')
     f.write('Edges:\n')
 
     # Iterate over Edges
-    for e in graph.edges():
-        f.write(str(e.source()) + ' ' + str(e.target()) + '\n')
+#    for e in graph.edges():
+#        f.write(str(e.source()) + ' ' + str(e.target()) + '\n')
 
 
-gr = el.edglist('testgraph')
-layout('testlayout', gr)
-graph_draw(gr, vertex_text=gr.vp.name, output="testgraph2.pdf")
+#gr = el.edglist('testgraph')
+#layout('testlayout', gr)
+#graph_draw(gr, vertex_text=gr.vp.name, output="testgraph2.pdf")
 # Graphlayout concides with the graph drawn, not with the graph specified in testgraph however
 	
