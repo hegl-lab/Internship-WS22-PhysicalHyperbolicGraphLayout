@@ -31,7 +31,7 @@ geo = eg.EuclideanGeometry([0,0])
 def initlayout(vcount):
     points = []
     for i in range(0,vcount):
-        points += [geo.randomPoint(1000)]
+        points += [geo.randomPoint()]
     return points
 
 def getoutdegs(graph):

@@ -37,7 +37,7 @@ class EuclideanGeometry(Geometry.Geometry):
         v2_u = self.unit_vector(v2)
         return np.arccos(np.clip(np.dot(v1_u.euclPoint, v2_u.euclPoint), -1.0, 1.0))
 
-    def randomPoint(self, range):
+    def randomPoint(self, range=1000):
         return Geometry.Point([random.randint(-range, range), random.randint(-range, range)])
 
     def getTangent(self, center, pa):
