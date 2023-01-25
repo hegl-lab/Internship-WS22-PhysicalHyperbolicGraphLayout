@@ -1,7 +1,7 @@
 import Geometry
 import euclideanGeometry
 import numpy as np
-from math import cos, sin
+import math
 import random
 import cmath
 
@@ -14,7 +14,7 @@ class PoincareDiskModel(Geometry.Geometry):
 
     # returns Center and radius of the circle or in case the geodesic is a line the direction of the line and 0
     def getGeodesic(self, pa, pb):
-        if self.checkOnOriginLine(pa, pb, 0.0000001) == True:
+        if self.checkOnOriginLine(pa, pb, 0.00001) == True:
             return eG.direction(pa, pb), 0
         # Returning what in case of straight line?
         # Naming of the variables following Wikipedia second way https://en.wikipedia.org/wiki/Poincar%C3%A9_disk_model#Compass_and_straightedge_construction
@@ -63,7 +63,7 @@ class PoincareDiskModel(Geometry.Geometry):
         rot = np.array([[cos(theta), -sin(theta)], [sin(theta), cos(theta)]])
         return Geometry.Point(np.dot(rot, eG.getTangent(center, pb).euclPoint))
 
-    def randomPoint(self, range):
+    def randomPoint(self, range=1):
         '''Giving a random Point within the radius range'''
         alpha = 2 * math.pi * random.random()
         r = range * math.sqrt(random.random())

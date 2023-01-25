@@ -22,7 +22,7 @@ class EuclideanGeometry(Geometry.Geometry):
         return Geometry.Point(direct)
 
     def paralleltransport(direct, pa, pb):
-        pass
+        return direct
 
     def getOrigin(self):
         return self.origin
@@ -45,9 +45,3 @@ class EuclideanGeometry(Geometry.Geometry):
         tangent.euclPoint[0], tangent.euclPoint[1] = tangent.euclPoint[1], - \
             tangent.euclPoint[0]
         return tangent
-
-
-c = EuclideanGeometry(Geometry.Point([0, 0]))
-
-#p1 = Geometry.Point([1, 0])
-#p2 = Geometry.Point([3, 4])
