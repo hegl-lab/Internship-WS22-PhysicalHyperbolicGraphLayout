@@ -44,7 +44,7 @@ class Geometry(ABC):
     @abstractmethod
     def paralleltransport(self, direct, pa, pb):
         pass
-    
+
     @abstractmethod
     def getOrigin(self):
         return self.origin
