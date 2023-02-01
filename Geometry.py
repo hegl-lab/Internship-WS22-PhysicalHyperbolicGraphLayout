@@ -74,5 +74,5 @@ class Geometry(ABC):
         pass
 
     @abstractmethod
-    def drawGraph(self,  graph, points, inputRadius, name, imageSize,  defaultRGBColour, defaultLineWidth, defaultPointSize):
+    def drawGraph(self,  graph, points, name, imageSize,  defaultRGBColour, defaultLineWidth, defaultPointSize):
         pass

@@ -124,13 +124,28 @@ class EuclideanGeometry(Geometry.Geometry):
         self.cr.stroke()
         return
 
+    def findInputRadius(self, points):
+        print(max([max([abs(point.euclPoint[0]) for point in points]), max([abs(point.euclPoint[1]) for point in points])]))
+        return max([max([abs(point.euclPoint[0]) for point in points]), max([abs(point.euclPoint[1]) for point in points])])
 
-    def drawGraph(self, graph, points,  inputRadius, name="euclideanGeometry.svg", imageSize=100,  defaultRGBColour=[0,0,0], defaultLineWidth=0.005, defaultPointSize=0.0075):
+    def drawGraph(self, graph, points, name="euclideanGeometry.svg", imageSize=100,  defaultRGBColour=[0,0,0], defaultLineWidth=0.005, defaultPointSize=0.0075):
         '''Takes a List of Points and edges and returns an image'''
+        inputRadius = self.findInputRadius(points)
+        imageSize = inputRadius*5000
         self.initiateImage(**dict(list(locals().items())[3:]))
         for v in graph.iter_vertices():
             self.drawPoint(points[v])
 
         for s, t in graph.iter_edges():
             self.drawGeodesic(points[s], points[t])
+        
+        # self.drawGeodesic(Geometry.Point([inputRadius, - inputRadius+inputRadius/100]), Geometry.Point([inputRadius, - inputRadius-inputRadius/100]))
+        # self.drawGeodesic(Geometry.Point([inputRadius - inputRadius/5, - inputRadius+inputRadius/100]), Geometry.Point([inputRadius- inputRadius/5, - inputRadius-inputRadius/100]))
+        # self.drawGeodesic(Geometry.Point([inputRadius - inputRadius/5, - inputRadius]), Geometry.Point([inputRadius, - inputRadius]))
+        # self.cr.set_source_rgb(0, 0, 0)
+        # self.cr.select_font_face("Sans", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
+        # self.cr.set_font_size(inputRadius*1000)
+        # print(self.transform(Geometry.Point([inputRadius - inputRadius/5, - inputRadius])))
+        # self.cr.move_to(*self.transform(self.origin))
+        # self.cr.show_text("######")
         return

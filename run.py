@@ -8,18 +8,18 @@ import numpy as np
 import edgelist as el
 import graphlayout as gl
 import forceatlas2 as fa
-import draw as d
-
+import euclideanGeometry as eG
+import PoincareDiskModel as pdm
 # Takes the filename of the graph, (runs it through the algorithm and returns corresponding graphlayout) -todo
 def run(filename):
     graph = el.edglist(filename)
     coords = []
     # Arguments: graph, setup, repulsion const., gravity const., swing const., max. swing, swing tolerance
     for i in range(0,500):
-        coords = fa.forceatlas2(graph,coords,2,30,0.1,10,0.5)
+        coords = fa.forceatlas2(graph,2,30,0.1,10,0.5)
         #gl.layout(filename+str(i)+'result', graph, coords)
-        c = d.DrawPoincareDisk(500, filename+"result/"+str(i)+".png")
-        c.plotGraph(graph, coords)
+        c = eG.EuclideanGeometry([0,0])
+        c.drawGraph(graph, coords, filename+"result/"+str(i)+".png", 10000)
 
 # Testing cases:
 #tests = ["testgraphs/petersen_graph","testgraphs/tree_like","testgraphs/self_loop","testgraphs/disconnected","testgraphs/square_tail","testgraphs/square_complete","testgraphs/single_edge","testgraphs/generic_graph"]
