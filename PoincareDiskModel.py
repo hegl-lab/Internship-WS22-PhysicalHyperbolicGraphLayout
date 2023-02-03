@@ -46,8 +46,10 @@ class PoincareDiskModel(Geometry.Geometry):
         euclDistPaPb = eG.getDistance(pa, pb)
         euclDistPaO = eG.getDistance(pa, self.getOrigin())
         euclDistPbO = eG.getDistance(pb, self.getOrigin())
+        try
         return np.arccosh(1+(2 * euclDistPaPb**2 * r**2) /
                        ((r**2 - euclDistPaO**2)*(r**2 - euclDistPbO**2)))
+        
 
     def direction(self, pa, pb):
         Center, r = self.getGeodesic(pb, pa)
@@ -175,7 +177,7 @@ class PoincareDiskModel(Geometry.Geometry):
         #Initiate size of the image, the radius of the PDM and the framework for the image
         self.n = imageSize
         self.radius = self.n/2*0.9
-        self.ps = cairo.SVGSurface(name, self.n, self.n)
+        self.ps = cairo.ImageSurface(cairo.FORMAT_ARGB32, self.n, self.n)
         self.cr = cairo.Context(self.ps)
         self.inputRadius = inputRadius
 
@@ -209,4 +211,5 @@ class PoincareDiskModel(Geometry.Geometry):
 
         for s, t in graph.iter_edges():
             self.drawGeodesic(points[s], points[t])
+        ims.write_to_png(name)
         return
