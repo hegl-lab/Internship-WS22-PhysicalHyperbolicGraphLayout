@@ -18,8 +18,11 @@ def run(filename):
     for i in range(0,500):
         coords = fa.forceatlas2(graph,2,30,0.1,10,0.5)
         #gl.layout(filename+str(i)+'result', graph, coords)
-        c = eG.EuclideanGeometry([0,0])
-        c.drawGraph(graph, coords, filename+"result/"+str(i)+".png", 10000)
+        c = pdm.Interface(graph, coords, 1000)
+        Gtk.main()
+        coords = c.points
+        #PDM = pdm.PoincareDiskModel([0,0])
+        #PDM.drawGraph(graph, coords, "filename+"result/"+str(i)+".png", 10000)
 
 # Testing cases:
 #tests = ["testgraphs/petersen_graph","testgraphs/tree_like","testgraphs/self_loop","testgraphs/disconnected","testgraphs/square_tail","testgraphs/square_complete","testgraphs/single_edge","testgraphs/generic_graph"]
