@@ -40,7 +40,7 @@ class PoincareDiskModel(Geometry.Geometry):
             slopeLineM.euclPoint[0]
         # Calculating intersection of both lines
         t = (slopeLineN.euclPoint[1]*(midpointPPPrime.euclPoint[0]-midpointPaPb.euclPoint[0])-slopeLineN.euclPoint[0]*(midpointPPPrime.euclPoint[1] -
-             midpointPaPb.euclPoint[1]))/(slopeLineM.euclPoint[0]*slopeLineN.euclPoint[1]-slopeLineN.euclPoint[0]*slopeLineM.euclPoint[1])
+             midpointPaPb.euclPoint[1]))/(slopeLineM.euclPoint[0]*slopeLineN.euclPoint[1]-slopeLineN.euclPoint[0]*slopeLineM.euclPoint[1]+0.00001) # TODO: Slightly disturbe denominator to avoid Division by zero for
         C = Geometry.Point([midpointPaPb.euclPoint[0] + slopeLineM.euclPoint[0]
                            * t, midpointPaPb.euclPoint[1] + slopeLineM.euclPoint[1] * t])
         return C, eG.getDistance(C, pa)
@@ -56,8 +56,8 @@ class PoincareDiskModel(Geometry.Geometry):
         euclDistPaPb = eG.getDistance(pa, pb)
         euclDistPaO = eG.getDistance(pa, self.getOrigin())
         euclDistPbO = eG.getDistance(pb, self.getOrigin())
-        return np.arccosh(1+(2 * euclDistPaPb**2 * r**2) /
-                       ((r**2 - euclDistPaO**2)*(r**2 - euclDistPbO**2)))
+        return np.arccosh(1+abs((2 * euclDistPaPb**2 * r**2) /
+                       abs((r**2 - euclDistPaO**2)*(r**2 - euclDistPbO**2)+0.000001))) # Absolute value and disturbance to avoid invalid arguments
         
 
     def direction(self, pa, pb):
