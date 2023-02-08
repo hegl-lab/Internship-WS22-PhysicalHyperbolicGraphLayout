@@ -4,9 +4,19 @@ import numpy as np
 import math
 import random
 import cmath
+import gi.repository 
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk, Gdk
 import cairo
 
+
 eG = euclideanGeometry.EuclideanGeometry([0, 0])
+
+class MouseButtons:
+    
+    LEFT_BUTTON = 1
+    RIGHT_BUTTON = 3
+    
 
 
 class PoincareDiskModel(Geometry.Geometry):
@@ -46,7 +56,6 @@ class PoincareDiskModel(Geometry.Geometry):
         euclDistPaPb = eG.getDistance(pa, pb)
         euclDistPaO = eG.getDistance(pa, self.getOrigin())
         euclDistPbO = eG.getDistance(pb, self.getOrigin())
-        try
         return np.arccosh(1+(2 * euclDistPaPb**2 * r**2) /
                        ((r**2 - euclDistPaO**2)*(r**2 - euclDistPbO**2)))
         
@@ -81,6 +90,7 @@ class PoincareDiskModel(Geometry.Geometry):
     def transform(self, Point):
         '''Takes a point from the unitcircle and returns transformed image coordinates as an array'''
         xy = Point.euclPoint
+        print("Transforming")
         return [((xy[0]+self.inputRadius)*self.radius)/self.inputRadius + self.n/2 - self.radius, self.n/2 - ((xy[1]+self.inputRadius)*self.radius)/self.inputRadius + self.radius]
 
     def drawPoint(self, Point, RGBcolour=None, pointSize=None):
@@ -211,5 +221,75 @@ class PoincareDiskModel(Geometry.Geometry):
 
         for s, t in graph.iter_edges():
             self.drawGeodesic(points[s], points[t])
-        ims.write_to_png(name)
+        self.ps.write_to_png(name)
         return
+
+
+#PDM = PoincareDiskModel([0,0])
+
+class Interface(Gtk.Window):
+    
+    def __init__(self, graph, points, size):
+        super().__init__()
+        self.graph = graph
+        self.points = points
+        self.size = size
+        self.init_ui()
+
+
+    def init_ui(self):    
+
+        self.darea = Gtk.DrawingArea()
+        self.darea.connect("draw", self.on_draw)
+        self.darea.set_events(Gdk.EventMask.BUTTON_PRESS_MASK)        
+        self.add(self.darea)
+        self.pointsToMove = [] 
+                  
+        self.darea.connect("button-press-event", self.on_button_press)
+
+        self.set_title("Lines")
+        self.resize(self.size, self.size)
+        self.set_position(Gtk.WindowPosition.CENTER)
+        self.connect("delete-event", Gtk.main_quit)
+        self.show_all()
+
+    def transform(self, Point):
+        xy = Point.euclPoint
+        self.inputRadius = 1
+        self.radius = (0.9 * self.size )/ 2
+        return [((xy[0]+self.inputRadius)*self.radius)/self.inputRadius + self.size/2 - self.radius, self.size/2 - ((xy[1]+self.inputRadius)*self.radius)/self.inputRadius + self.radius]
+
+        
+    def on_draw(self, wid, cr):
+        cr.set_source_rgb(0, 0, 0)
+        for v in self.graph.iter_vertices():
+            cr.arc(self.transform(self.points[v])[0], self.transform(self.points[v])[1], 3, 0, 2*math.pi)
+            cr.fill()
+            print(self.transform(self.points[v]))
+        for s, t in self.graph.iter_edges():
+            cr.move_to(self.transform(self.points[s])[
+                            0], self.transform(self.points[s])[1])
+            cr.line_to(self.transform(self.points[t])[
+                            0], self.transform(self.points[t])[1])
+            cr.stroke()
+            #PDM.drawGeodesic(self.points[s], self.points[t])           
+                         
+                         
+    def on_button_press(self, w, e):
+        
+        if e.type == Gdk.EventType.BUTTON_PRESS \
+            and e.button == MouseButtons.LEFT_BUTTON:
+            
+            for v in self.graph.iter_vertices():
+                
+                if self.transform(self.points[v])[0] > e.x-10 and self.transform(self.points[v])[0] < e.x+10 and self.transform(self.points[v])[1] > e.y-10 and self.transform(self.points[v])[1] < e.y+10:
+                    self.pointsToMove.append(v)
+
+        if e.type == Gdk.EventType.BUTTON_PRESS \
+            and e.button == MouseButtons.RIGHT_BUTTON:
+                
+            for v in self.pointsToMove:
+                self.points[v].euclPoint = [(e.x + self.radius - self.size/2)*self.inputRadius/self.radius - self.inputRadius, (-e.y + self.radius + self.size/2)*self.inputRadius/self.radius - self.inputRadius]
+            self.pointsToMove = [] 
+            self.darea.queue_draw()           
+        return self.points
