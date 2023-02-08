@@ -10,6 +10,9 @@ import graphlayout as gl
 import forceatlas2 as fa
 import euclideanGeometry as eG
 import PoincareDiskModel as pdm
+import gi.repository 
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk, Gdk
 # Takes the filename of the graph, (runs it through the algorithm and returns corresponding graphlayout) -todo
 def run(filename):
     graph = el.edglist(filename)
