@@ -247,7 +247,7 @@ class Interface(Gtk.Window):
                   
         self.darea.connect("button-press-event", self.on_button_press)
 
-        self.set_title("Lines")
+        self.set_title("Graph")
         self.resize(self.size, self.size)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.connect("delete-event", Gtk.main_quit)
