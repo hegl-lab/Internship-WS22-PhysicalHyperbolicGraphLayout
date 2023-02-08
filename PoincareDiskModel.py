@@ -72,7 +72,7 @@ class PoincareDiskModel(Geometry.Geometry):
     def paralleltransport(self, direct, pa, pb):
         center, r = self.getGeodesic(pa, pb)
         theta = eG.angle_between(eG.getTangent(center, pa), direct)
-        rot = np.array([[cos(theta), -sin(theta)], [sin(theta), cos(theta)]])
+        rot = np.array([[math.cos(theta), -math.sin(theta)], [math.sin(theta), math.cos(theta)]])
         return Geometry.Point(np.dot(rot, eG.getTangent(center, pb).euclPoint))
 
     def randomPoint(self, range=1):
@@ -225,7 +225,7 @@ class PoincareDiskModel(Geometry.Geometry):
         return
 
 
-#PDM = PoincareDiskModel([0,0])
+PDM = PoincareDiskModel([0,0])
 
 class Interface(Gtk.Window):
     
@@ -234,6 +234,8 @@ class Interface(Gtk.Window):
         self.graph = graph
         self.points = points
         self.size = size
+        self.inputRadius = 1
+        self.radius = (0.9 * self.size )/ 2
         self.init_ui()
 
 
@@ -255,13 +257,13 @@ class Interface(Gtk.Window):
 
     def transform(self, Point):
         xy = Point.euclPoint
-        self.inputRadius = 1
-        self.radius = (0.9 * self.size )/ 2
         return [((xy[0]+self.inputRadius)*self.radius)/self.inputRadius + self.size/2 - self.radius, self.size/2 - ((xy[1]+self.inputRadius)*self.radius)/self.inputRadius + self.radius]
 
         
     def on_draw(self, wid, cr):
         cr.set_source_rgb(0, 0, 0)
+        cr.arc(self.size/2, self.size/2, self.radius, 0, 2*math.pi)
+        cr.stroke()
         for v in self.graph.iter_vertices():
             cr.arc(self.transform(self.points[v])[0], self.transform(self.points[v])[1], 3, 0, 2*math.pi)
             cr.fill()
@@ -289,7 +291,7 @@ class Interface(Gtk.Window):
             and e.button == MouseButtons.RIGHT_BUTTON:
                 
             for v in self.pointsToMove:
-                self.points[v].euclPoint = [(e.x + self.radius - self.size/2)*self.inputRadius/self.radius - self.inputRadius, (-e.y + self.radius + self.size/2)*self.inputRadius/self.radius - self.inputRadius]
+                self.points[v] = Geometry.Point([(e.x + self.radius - self.size/2)*self.inputRadius/self.radius - self.inputRadius, (-e.y + self.radius + self.size/2)*self.inputRadius/self.radius - self.inputRadius]) + PDM.randomPoint(0.05)
             self.pointsToMove = [] 
             self.darea.queue_draw()           
         return self.points
