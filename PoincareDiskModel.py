@@ -259,22 +259,66 @@ class Interface(Gtk.Window):
         xy = Point.euclPoint
         return [((xy[0]+self.inputRadius)*self.radius)/self.inputRadius + self.size/2 - self.radius, self.size/2 - ((xy[1]+self.inputRadius)*self.radius)/self.inputRadius + self.radius]
 
-        
+    def drawGeodesic():
+        return
+
     def on_draw(self, wid, cr):
+
+        #Origin and boundary
         cr.set_source_rgb(0, 0, 0)
         cr.arc(self.size/2, self.size/2, self.radius, 0, 2*math.pi)
         cr.stroke()
+        cr.arc(self.size/2, self.size/2, 3, 0, 2*math.pi)
+        cr.fill()
+
+        #Vertices
         for v in self.graph.iter_vertices():
             cr.arc(self.transform(self.points[v])[0], self.transform(self.points[v])[1], 3, 0, 2*math.pi)
             cr.fill()
             print(self.transform(self.points[v]))
+        
+        #Edges
         for s, t in self.graph.iter_edges():
-            cr.move_to(self.transform(self.points[s])[
-                            0], self.transform(self.points[s])[1])
-            cr.line_to(self.transform(self.points[t])[
-                            0], self.transform(self.points[t])[1])
-            cr.stroke()
-            #PDM.drawGeodesic(self.points[s], self.points[t])           
+            '''Drawing the geodesic of two points'''
+            # Calculating the ideal circle
+            C, r = PDM.getGeodesic(self.points[s], self.points[t])
+            
+            #Case, where the geodesic is a straight line through the origin
+            if r == 0:
+                cr.move_to(self.transform(Point1)[
+                                0], self.transform(Point1)[1])
+                cr.line_to(self.transform(Point2)[
+                                0], self.transform(Point2)[1])
+                cr.stroke()
+            
+            #Case, where the geodesic is a arc
+            else:
+                angle1 = eG.angle_between(eG.direction(C, self.points[s]), Geometry.Point([1, 0]))
+                angle2 = eG.angle_between(eG.direction(C, self.points[t]), Geometry.Point([1, 0]))
+                angle12 = eG.angle_between(eG.direction(C, self.points[s]), eG.direction(C, self.points[t])) 
+
+                #Checking all cases
+                if C.euclPoint[1]>self.points[s].euclPoint[1] and C.euclPoint[1]>self.points[t].euclPoint[1]:
+                    if angle1 > angle2: 
+                        angle1, angle2 = angle2, angle1
+                    angle12 += angle1 
+                elif C.euclPoint[1]>self.points[s].euclPoint[1] and C.euclPoint[1]<self.points[t].euclPoint[1]:
+                    angle12 = 2*math.pi  - angle2  
+                elif C.euclPoint[1]<self.points[s].euclPoint[1] and C.euclPoint[1]>self.points[t].euclPoint[1]:
+                    angle1, angle2 = angle2, angle1
+                    angle12 = 2*math.pi - angle2
+                elif C.euclPoint[1]<self.points[s].euclPoint[1] and C.euclPoint[1]<self.points[t].euclPoint[1]:
+                    if angle1 < angle2: angle1, angle2 = angle2, angle1
+                    angle1 = 2*math.pi - angle1 
+                    angle12 += angle1 
+
+                #Making sure, that it draws the right side of the arc    
+                if angle12 - angle1 > math.pi : angle1, angle12 = angle12, angle1
+
+                #Drawing the arc
+                cr.arc(self.transform(C)[0], self.transform(C)[1], r*self.radius, angle1, angle12)
+                cr.stroke()
+        return         
                          
                          
     def on_button_press(self, w, e):

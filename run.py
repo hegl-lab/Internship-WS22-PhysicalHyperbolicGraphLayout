@@ -7,7 +7,7 @@ from graph_tool.all import *
 import numpy as np
 import edgelist as el
 import graphlayout as gl
-import forceatlas2 as fa
+import fa2general as fa
 import euclideanGeometry as eG
 import PoincareDiskModel as pdm
 import gi.repository 
@@ -19,7 +19,7 @@ def run(filename):
     coords = []
     # Arguments: graph, setup, repulsion const., gravity const., swing const., max. swing, swing tolerance
     for i in range(0,500):
-        coords = fa.forceatlas2(graph,2,30,0.1,10,0.5)
+        coords = fa.forceatlas2(graph, coords, 2,30,0.1,10,0.5)
         #gl.layout(filename+str(i)+'result', graph, coords)
         c = pdm.Interface(graph, coords, 1000)
         Gtk.main()
