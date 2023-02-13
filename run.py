@@ -16,7 +16,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk
 
 # Takes the filename of the graph, (runs it through the algorithm and returns corresponding graphlayout) -todo
-def run(filename, it):
+def run(filename, it,  kr, kg, ks, ksmax, kstol):
     graph = el.edglist(filename)
     coords = []
     # Arguments: graph, setup, repulsion const., gravity const., swing const., max. swing, swing tolerance
@@ -25,9 +25,9 @@ def run(filename, it):
         # Be aware that the graphs react *very* sensitive to changes in the constants
         
     for i in range(0,it):
-        coords = fa.forceatlas2(graph, coords, 2,30,0.1,10,0.5)
+        coords = fa.forceatlas2(graph, coords, kr, kg, ks, ksmax, kstol)
         #gl.layout(filename+str(i)+'result', graph, coords)
-        c = pdm.Interface(graph, coords, 1000)
+        c = pdm.Interface(graph, coords, 1000,  kr, kg, ks, ksmax, kstol)
         #PDM = pdm.PoincareDiskModel([0,0]) # Uncomment for GIF
         #PDM.drawGraph(graph, coords, "filename+"result/"+str(i)+".png", 1000) #Uncomment for GIF
         Gtk.main()

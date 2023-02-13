@@ -229,14 +229,16 @@ PDM = PoincareDiskModel([0,0])
 
 class Interface(Gtk.Window):
     
-    def __init__(self, graph, points, size):
+    def __init__(self, graph, points, size,  kr, kg, ks, ksmax, kstol):
         super().__init__()
         self.graph = graph
         self.points = points
         self.size = size
         self.inputRadius = 1
         self.radius = (0.9 * self.size )/ 2
+        self.kr, self.kg, self.ks, self.ksmax, self.kstol =  kr, kg, ks, ksmax, kstol
         self.init_ui()
+
 
 
     def init_ui(self):    
@@ -249,6 +251,7 @@ class Interface(Gtk.Window):
                   
         self.darea.connect("button-press-event", self.on_button_press)
 
+        self.darea.connect("key-press-event", self.on_key_press)
         self.set_title("Graph")
         self.resize(self.size, self.size)
         self.set_position(Gtk.WindowPosition.CENTER)
@@ -337,5 +340,11 @@ class Interface(Gtk.Window):
             for v in self.pointsToMove:
                 self.points[v] = Geometry.Point([(e.x + self.radius - self.size/2)*self.inputRadius/self.radius - self.inputRadius, (-e.y + self.radius + self.size/2)*self.inputRadius/self.radius - self.inputRadius]) + PDM.randomPoint(0.05)
             self.pointsToMove = [] 
-            self.darea.queue_draw()           
+            self.darea.queue_draw()   
+
+    def on_key_press(self, w, e):
+
+        if e.type == Gdk.EventType.KEY_PRESS and e.button == Gdk.KEY_h:
+            print(h)
+            Gtk.main_quit()  
         return self.points
