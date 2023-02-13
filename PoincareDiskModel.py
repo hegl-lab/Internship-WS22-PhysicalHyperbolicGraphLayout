@@ -343,8 +343,8 @@ class Interface(Gtk.Window):
             self.darea.queue_draw()   
 
     def on_key_press(self, w, e):
-
+        print("asd")
         if e.type == Gdk.EventType.KEY_PRESS and e.button == Gdk.KEY_h:
-            print(h)
+            print("h")
             Gtk.main_quit()  
         return self.points
