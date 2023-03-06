@@ -1,34 +1,39 @@
 # abstract class Geometry for interface
 # Create subclasses by Geometry.register(Name)
 from abc import ABC, abstractmethod
+import numpy as np
 
 
 class Point(ABC):
     def __init__(self, euclPoint):
+        #This will be the main property, we will work with
         self.euclPoint = euclPoint
 
+    #adding coordinatewise operations
     def __add__(self, pb):
-        return Point([self.euclPoint[0]+pb.euclPoint[0], self.euclPoint[1]+pb.euclPoint[1]])
+        return Point([a_i + b_i for a_i, b_i in zip(self.euclPoint, pb.euclPoint)])
 
     def __sub__(self, pb):
-        return Point([self.euclPoint[0]-pb.euclPoint[0], self.euclPoint[1]-pb.euclPoint[1]])
+        return Point([a_i - b_i for a_i, b_i in zip(self.euclPoint, pb.euclPoint)])
 
     def __mul__(self, scalar):
-        return Point([self.euclPoint[0]*scalar, self.euclPoint[1]*scalar])
+        return Point([a_i*scalar for a_i in self.euclPoint])
 
     def __truediv__(self, scalar):
-        return Point([self.euclPoint[0]/scalar, self.euclPoint[1]/scalar])
+        return Point([a_i/scalar for a_i in self.euclPoint])
 
     def midpoint(self, pb):
         return (self+pb)*(1/2)
 # still needs to inherit Point class?
 
 
+
 class Geometry(ABC):
 
     def __init__(self, origin):
         self.origin = Point(origin)
-
+    
+    #setting framework for the different geometries
     @abstractmethod
     def translate(self, pa, direct):
         pass
