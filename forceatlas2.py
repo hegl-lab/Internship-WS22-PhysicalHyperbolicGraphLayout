@@ -1,3 +1,6 @@
+# OUTDATED; USE FA2GENERAL INSTEAD!
+# Only for euclidean case; This might be interesting for testing purposes, however
+
 # Adapted implementation of Force Atlas 2 Algorithm
 # Source: https://doi.org/10.1371/journal.pone.0098679, Jacomy et al.
 # Used under Creative Commons Attributions License
@@ -7,8 +10,6 @@
 # Now: used geometry hardcoded (euclidean geometry)
 # Goal: give choice of geometry
 
-
-# TODO TODO TODO TODO Caution: Addition of directions might cause problems!
 
 #### Settings
 
