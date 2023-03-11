@@ -62,7 +62,7 @@ class EuclideanGeometry(Geometry.Geometry):
         """Setting up the image and the parameters of it
         
         Arguments:
-        inputRadius -- the maximum of the maximum norm of all points that should be imaged (important for transform method)
+        inputRadius -- the maximum of the maximum norm of all points that should be imaged (important for transform method image-coordinates)
         imageSize -- the pixelsize of the image
         name -- filename of the image
         defaultRGBColour -- default colour of all the lines and points. List with RGB-Values i.e. [0,0,0] for black
@@ -71,7 +71,7 @@ class EuclideanGeometry(Geometry.Geometry):
         """
         #Initiate size of the image, the radius of the PDM and the framework for the image
         self.n = imageSize
-        self.radius = self.n/2*0.9 #(pixel-)radius of the boundary of the disk
+        self.radius = self.n/2*0.9 #(pixel-)sidelength of the boundary of the coordinate system
         self.ps = cairo.SVGSurface(name, self.n, self.n)
         self.cr = cairo.Context(self.ps)
         self.inputRadius = inputRadius
@@ -159,6 +159,7 @@ class EuclideanGeometry(Geometry.Geometry):
         graph -- Graph object
         points -- Corresponding list of points classes
         name -- filename of the image
+        imageSize -- the pixelsize of the image
         defaultRGBColour -- default colour of all the lines and points. List with RGB-Values i.e. [0,0,0] for black
         defaultLineWidth -- default size of all lines, mainly the geodesics, scaling from 0 to 1 with 1 being the whole disk
         defaultPointSize -- default size of all points, scaling from 0 to 1 with 1 being the whole disk
@@ -175,6 +176,8 @@ class EuclideanGeometry(Geometry.Geometry):
         for s, t in graph.iter_edges():
             self.drawGeodesic(points[s], points[t])
         
+        #TODO: Attempt to draw the coordinate system
+
         # self.drawGeodesic(Geometry.Point([inputRadius, - inputRadius+inputRadius/100]), Geometry.Point([inputRadius, - inputRadius-inputRadius/100]))
         # self.drawGeodesic(Geometry.Point([inputRadius - inputRadius/5, - inputRadius+inputRadius/100]), Geometry.Point([inputRadius- inputRadius/5, - inputRadius-inputRadius/100]))
         # self.drawGeodesic(Geometry.Point([inputRadius - inputRadius/5, - inputRadius]), Geometry.Point([inputRadius, - inputRadius]))
