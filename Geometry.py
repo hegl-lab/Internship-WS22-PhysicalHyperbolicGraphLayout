@@ -6,10 +6,10 @@ import numpy as np
 
 class Point(ABC):
     def __init__(self, euclPoint):
-        #This will be the main property, we will work with
+        # This will be the main property, we will work with
         self.euclPoint = euclPoint
 
-    #adding coordinatewise operations
+    # adding coordinatewise operations
     def __add__(self, pb):
         return Point([a_i + b_i for a_i, b_i in zip(self.euclPoint, pb.euclPoint)])
 
@@ -27,13 +27,12 @@ class Point(ABC):
 # still needs to inherit Point class?
 
 
-
 class Geometry(ABC):
 
     def __init__(self, origin):
         self.origin = Point(origin)
-    
-    #setting framework for the different geometries
+
+    # setting framework for the different geometries
     @abstractmethod
     def translate(self, pa, direct):
         pass
