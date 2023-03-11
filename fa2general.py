@@ -2,15 +2,31 @@
 # Source: https://doi.org/10.1371/journal.pone.0098679, Jacomy et al.
 # Used under Creative Commons Attributions License
 
-# Input: Graph objects consisting of nodes with respective coordinates in given geometry, abstract edges
+# Run by calling "forceatlas2" with the following parameters:
 
-# Now: used geometry hardcoded (euclidean geometry)
-# Goal: give choice of geometry
+# Input: 
+# 	Graph objects consisting of nodes with respective coordinates in given geometry, abstract edges
+# 		Currently extracted from edgelist .txt by "edgelist.py"
+#	Repulsion constant
+#		Regulates how much vertices will repel each other
+#	Gravity constant
+#		Sets how strong the force pulling the vertices to the center of the poincare disk will be
+#	Swing constant
+#	Maximal swing
+#	Swing tolerance
+#		These three parameters control the "swing" of the graph, i.e. how much the force should be damped, what the maximal coefficient of forces between two steps resp. between forces and traction should be.
+
+# Number of iterations has to be manually set
 
 
-# TODO TODO TODO TODO Caution: Addition of directions might cause problems!
+# TODO for this code:
+# - Permit number of iterations as parameter
+# - Keep Swing between sets of iterations
+# - Possibly include graphing options here.
+# - Allow choice of geometry
 
-#### Settings
+
+#### Packages
 
 import numpy as np
 #import euclideanGeometry as eg
@@ -19,24 +35,24 @@ import Geometry as pt
 import random as rd
 
 
-# functions for ForceAtlasAlgorithm
 
+
+#### Auxiliary and setup functions
 
 # Creates Instance of chosen geometry with the argument "centerpoint"
 geo = eg.PoincareDiskModel([0,0])
 #geo = eg.PoincareDiskModel([0,0])
 
 
-
 # Assigns random coordinates to each vertex and gives them back as list
 # The coordinates are stored as point objects
-# TODO Point choice strategies
 def initlayout(vcount):
     points = []
     for i in range(0,vcount):
-        points += [geo.randomPoint(0.1)] # Chose points that are fairly close to the center
+        points += [geo.randomPoint(0.1)] # Choose points that are fairly close to the center
     return points
 
+# Gets outward degrees of graphs into a list
 def getoutdegs(graph):
     degs = []
     for v in graph.vertices():
@@ -51,7 +67,9 @@ def normdir(r,d):
         return geo.getOrigin()
 
 
-### Functions to calculate Forces
+
+
+#### Functions to calculate Forces
 # Determines attraction force between two nodes
 # Takes two points as arguments
 def attForce(p1, p2):
@@ -67,7 +85,6 @@ def repForce(d1,d2,p1,p2,kr):
     else:
         return geo.getOrigin() # Previous strategy didn't make sense as the force would still be the same for both points
 
-
 # Determines the force for strong gravity for each node (keeps graph pulled to the center)
 # F(n) = kg(deg(n)+1)disttoorigin(n)
 # Takes the degree and point associated to a vertex and the gravity coefficient
@@ -78,10 +95,8 @@ def sgravForce(d, p, kg):
 
 
 
-
-
-### Iteration
-# kr is the repulsion constant, kg the gravity constant, kg the swing constant,ksmax and kstol being the maximal swinging and the swinging tolerance. Example values: kr = 2, kg = 3, ks = 0.1, ksmax = 10
+#### Algorithm
+# kr is the repulsion constant, kg the gravity constant, kg the swing constant,ksmax and kstol being the maximal swinging and the swinging tolerance.
 def forceatlas2(graph,points, kr, kg, ks, ksmax, kstol):
     # Initial settings: Mapping of the graph to coordinates, setting of global speed
     vcount = len(graph.get_vertices())
@@ -113,7 +128,7 @@ def forceatlas2(graph,points, kr, kg, ks, ksmax, kstol):
                 if(v != w):
                     # transports the direction to be added to where the previous direction goes and gets added by transposing the "direction point"
                     rep = repForce(degs[v],degs[w],points[v],points[w],kr)
-                    direc[v] -= rep # TODO: Plus or Minus?
+                    direc[v] -= rep
             # Compute gravity forces and total forces for current step for each vertex
             grav = sgravForce(degs[v], points[v], kg)
             direc[v] += grav
@@ -134,8 +149,8 @@ def forceatlas2(graph,points, kr, kg, ks, ksmax, kstol):
         for v in graph.iter_vertices():
             speed = ks*gspeed/(1+gspeed*np.sqrt(swing[v]))
             if speed >= ksmax/abs(geo.getDistance(orig,direc[v])+0.00001):
-               speed = ksmax/abs(geo.getDistance(orig,direc[v])+0.00001) # TODO Is this a useful strategy?
-            points[v] = geo.translate(points[v],direc[v], abs(geo.getDistance(direc[v],orig))*speed) # TODO Delete last argument for euclidean model
+               speed = ksmax/abs(geo.getDistance(orig,direc[v])+0.00001)
+            points[v] = geo.translate(points[v],direc[v], abs(geo.getDistance(direc[v],orig))*speed)
             
             fprev[v] = direc[v]
             direc[v] = geo.getOrigin()

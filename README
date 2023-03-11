@@ -1,22 +1,12 @@
-Hyperbolic Graph Layout
-- Graph Input
-- Physics Simulation
-- Hyperbolic Space
-- Pictoral Output
+Physical Graph Layout In Hyperbolic Space
 
+DESCRIPTION
+Layouting graphs in euclidean space (i.e. in a plane) can be done using various applications and programs; this project now wants to give a way to layout, and thus visualize, graphs in hyperbolic space.
+We do this by using and adapting the Force Atlas 2 algorithm (Source: https://doi.org/10.1371/journal.pone.0098679, Jacomy et al., Used under Creative Commons Attributions License) and doing the calculations within the hyperbolic plane, represented by the Poincaré disk model.
+The way this works is by considering the graph a physical model consitsing of repelling charges, springs that pull them together and gravity. For each iteration, the forces acting on each vertex are calculated and applied to it. To avoid erratic behaviour, the forces are be damped if too large.
+This project is still in its early stages, so its use is quite limited at the moment. It is especially not suited for any larger graphs, as the runtime piles up quickly.
 
-run.py: Use hardcoded filename and run basic layout pipeline
-
-Basic Layout Pipelline
-
-1. graphinput.py: Read edgelist from file and convert to python graph representatation (https://graph-tool.skewed.de)
-2. graphlayout.py: From graph represenation produce a layout
-
-
-ex.
-edglist.txt = "1,2\n 2,3"
-layout.txt = "1 x1 y1\n 2 x2 y2\n 3 x3 y3"
-
-
-Future
-Hyperbolic visualization/geometry
+HOW TO RUN THE PROJECT
+The algorithm can be run by executing the file "run.py". The constants can be changed directly in the file in line 30, the filename of the file used in line 57. The number of iterations per step can only be changed within "fa2general.py".You might need to create the folder 'filename+"result"' before you can run the code if you choose to create a gif of the process or want to save the images between steps.
+The input required is a plain text file with all the edges denoting the graph.
+To run this code, the python package graph-tool is required. For more details on this, see https://graph-tool.skewed.de/ .
