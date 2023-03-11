@@ -54,5 +54,7 @@ def run(filename, it,  kr, kg, ks, ksmax, kstol):
 #for x in tests:
 #    g = run(x)
 #    graph_draw(g, vertex_text=g.vp.name, output="results/"+x+".pdf")
-run("testgraphs/petersen_graph", 50)
+
+# Arguments: filename, number of iterations (not iterations per step!), repulsion const., gravity const., swing const., max. swing, swing tolerance
+run("testgraphs/tree_like", 50, 1, 1, 1, 0.01, 0.1)
 # Cases that need handling: ,"testgraphs/empty_graph"
