@@ -1,8 +1,9 @@
 # Main program
 # Input: Graph (as a .txt with according layout)
-# (Possibly choice of Geometry)
-
 # Output: Corresponding layout of nodes after applying the force-atlas-2-Algorithm with respective geometry
+
+# To make a GIF, uncomment all lines with the comment '#Uncomment for GIF'
+
 from graph_tool.all import *
 from graph_tool.all import *
 from moviepy.editor import *
@@ -31,7 +32,7 @@ def run(filename, it,  kr, kg, ks, ksmax, kstol):
         #gl.layout(filename+str(i)+'result', graph, coords)
         c = pdm.Interface(graph, coords, 1000,  kr, kg, ks, ksmax, kstol)
         #PDM = pdm.PoincareDiskModel([0,0]) # Uncomment for GIF
-        #PDM.drawGraph(graph, coords, "filename+"result/"+str(i)+".png", 1000) #Uncomment for GIF
+        #PDM.drawGraph(graph, coords, filename+"result/"+str(i)+".png", 1000) #Uncomment for GIF
         Gtk.main()
         coords = c.points
     #toGif(filename, it) # Takes A LOT of time - uncomment for GIF
