@@ -7,6 +7,6 @@ The way this works is by considering the graph a physical model consitsing of re
 This project is still in its early stages, so its use is quite limited at the moment. It is especially not suited for any larger graphs, as the runtime piles up quickly.
 
 HOW TO RUN THE PROJECT
-The algorithm can be run by executing the file "run.py". The constants can be changed directly in the file in line 30, the filename of the file used in line 57. The number of iterations per step can only be changed within "fa2general.py".You might need to create the folder 'filename+"result"' before you can run the code if you choose to create a gif of the process or want to save the images between steps.
+The algorithm can be run by executing the file "run.py". The constants and the filename can be changed directly in the file in line 57. The number of iterations per step can only be changed within "fa2general.py".You might need to create the folder 'filename+"result"' before you can run the code if you choose to create a gif of the process or want to save the images between steps.
 The input required is a plain text file with all the edges denoting the graph.
 To run this code, the python package graph-tool is required. For more details on this, see https://graph-tool.skewed.de/ .
